@@ -32,7 +32,17 @@ namespace CosmicCuration.Bullets {
             PooledBullet pooledBullet = new PooledBullet();
             pooledBullet.bulletController = new BulletController(bulletView, bulletScriptableObject);
             pooledBullet.isActive = true;
+            pooledBullets.Add(pooledBullet);
             return pooledBullet.bulletController;
+        }
+        
+        public void ReturnBulletToPool(BulletController bulletController)
+        {
+            PooledBullet pooledBullet = pooledBullets.Find(b => b.bulletController == bulletController);
+            if (pooledBullet != null)
+            {
+                pooledBullet.isActive = false;
+            }
         }
 
         public class PooledBullet

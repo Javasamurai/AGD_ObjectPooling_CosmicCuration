@@ -99,7 +99,6 @@ namespace CosmicCuration.Player
 
         private void FireBulletAtPosition(Transform fireLocation)
         {
-            // BulletController bulletToFire = new BulletController(bulletPrefab, bulletScriptableObject);
             BulletController bulletToFire = bulletPool.GetBullet();
             bulletToFire.ConfigureBullet(fireLocation);
             GameService.Instance.GetSoundService().PlaySoundEffects(SoundType.PlayerBullet);
