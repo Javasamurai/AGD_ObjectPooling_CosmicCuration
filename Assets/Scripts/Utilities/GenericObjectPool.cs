@@ -2,12 +2,7 @@ namespace CosmicCuration.Utilities
 {
     public class GenericObjectPool<T> where T : class
     {
-        private T prefab;
         private System.Collections.Generic.List<PooledObject<T>> pooledObjects = new System.Collections.Generic.List<PooledObject<T>>();
-        public GenericObjectPool(T prefab)
-        {
-            this.prefab = prefab;
-        }
 
         public T GetObject()
         {
@@ -23,7 +18,16 @@ namespace CosmicCuration.Utilities
             return CreateNewObject();
         }
 
-        protected virtual T CreateNewObject()
+        public T CreateNewObject()
+        {
+            PooledObject<T> pooledObject = new PooledObject<T>();
+            pooledObject.obj = CreateNewItem();
+            pooledObject.isActive = true;
+            pooledObjects.Add(pooledObject);
+            return pooledObject.obj;
+        }
+
+        protected virtual T CreateNewItem()
         {
             throw new System.NotImplementedException();
         }
