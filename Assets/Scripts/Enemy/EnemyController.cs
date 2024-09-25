@@ -20,8 +20,8 @@ namespace CosmicCuration.Enemy
 
         public EnemyController(EnemyView enemyPrefab, EnemyData enemyData)
         {
-            enemyView = Object.Instantiate(enemyPrefab);
-            enemyView.SetController(this);
+            this.enemyView = Object.Instantiate(enemyPrefab);
+            this.enemyView.SetController(this);
             this.enemyData = enemyData;
         }
 
@@ -29,7 +29,7 @@ namespace CosmicCuration.Enemy
         {
             enemyView.transform.position = positionToSet;
             SetEnemyOrientation(enemyOrientation);
-            
+
             currentEnemyState = EnemyState.Moving;
             currentHealth = enemyData.maxHealth;
             speed = Random.Range(enemyData.minimumSpeed, enemyData.maximumSpeed);
@@ -106,6 +106,7 @@ namespace CosmicCuration.Enemy
             GameService.Instance.GetUIService().IncrementScore(enemyData.scoreToGrant);
             GameService.Instance.GetSoundService().PlaySoundEffects(SoundType.EnemyDeath);
             GameService.Instance.GetVFXService().PlayVFXAtPosition(VFXType.EnemyExplosion, enemyView.transform.position);
+            GameService.Instance.GetEnemyService().ReturnEnemyToPool(this);
             Object.Destroy(enemyView.gameObject);
         }
 
