@@ -107,7 +107,6 @@ namespace CosmicCuration.Enemy
             GameService.Instance.GetSoundService().PlaySoundEffects(SoundType.EnemyDeath);
             GameService.Instance.GetVFXService().PlayVFXAtPosition(VFXType.EnemyExplosion, enemyView.transform.position);
             GameService.Instance.GetEnemyService().ReturnEnemyToPool(this);
-            Object.Destroy(enemyView.gameObject);
         }
 
         private enum EnemyState

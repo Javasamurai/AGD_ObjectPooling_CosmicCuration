@@ -1,55 +1,26 @@
 using UnityEngine;
 using System.Collections.Generic;
 using CosmicCuration.Enemy;
+using CosmicCuration.Utilities;
 
 namespace CosmicCuration.Enemy {
-    public class EnemyPool
+    public class EnemyPool : GenericObjectPool<EnemyController>
     {
         private EnemyView enemyView;
         private EnemyData enemyData;
-        private List<PooledEnemy> pooledEnemies = new List<PooledEnemy>();
         public EnemyPool(EnemyView enemyView, EnemyData enemyData)
         {
             this.enemyView = enemyView;
             this.enemyData = enemyData;
         }
 
-        public EnemyController GetEnemy()
+        override protected EnemyController CreateNewItem()
         {
-            if (pooledEnemies.Count > 0)
-            {
-                PooledEnemy pooledObject = pooledEnemies.Find(b => !b.isActive);
-                if (pooledObject != null)
-                {
-                    pooledObject.isActive = true;
-                    return pooledObject.enemyController;
-                }
-            }
-            return CreateNewEnemies();
+            return new EnemyController(enemyView, enemyData);
         }
 
-        private EnemyController CreateNewEnemies()
-        {
-            PooledEnemy pooledEnemy = new PooledEnemy();
-            pooledEnemy.enemyController = new EnemyController(enemyView, enemyData);
-            pooledEnemy.isActive = true;
-            pooledEnemies.Add(pooledEnemy);
-            return pooledEnemy.enemyController;
-        }
+        public EnemyController GetEnemy() => GetObject();
         
-        public void ReturnEnemyToPool(EnemyController enemyController)
-        {
-            PooledEnemy pooledEnemy = pooledEnemies.Find(b => b.enemyController == enemyController);
-            if (pooledEnemy != null)
-            {
-                pooledEnemy.isActive = false;
-            }
-        }
-
-        public class PooledEnemy
-        {
-            public EnemyController enemyController;
-            public bool isActive;
-        }
+        public void ReturnEnemyToPool(EnemyController enemyController) => ReturnObjectToPool(enemyController);
     }
 }
