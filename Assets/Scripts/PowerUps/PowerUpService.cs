@@ -9,7 +9,7 @@ namespace CosmicCuration.PowerUps
         private bool isSpawning;
         private float spawnTimer;
 
-        private PowerupPool powerupPool
+        private PowerupPool powerupPool;
 
         public PowerUpService(PowerUpScriptableObject powerUpScriptableObject)
         {
